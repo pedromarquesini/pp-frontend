@@ -1,0 +1,34 @@
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+:root {
+  --color-black-bg: #000;
+  --color-white-bg: #fff;
+  --color-orange-bg: #FF8E3D;
+  --color-orange:#FF6A00;
+  --color-red: #D50000;
+}
+
+checkbox:checked {
+  accent-color: var(--color-orange);
+}
