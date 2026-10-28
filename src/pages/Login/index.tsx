@@ -4,17 +4,19 @@ import { EnvelopeSimpleIcon, KeyIcon} from "@phosphor-icons/react";
 
 
 import "./style.css";
+import { useState } from "react";
 
 export default function Login() {      
+    const [showPassword, setShowPassword] = useState(false);
 
-    return (
+    return (      
         <main className="login-page flex flex-col items-center h-screen p-1">
             <section className="form-section flex flex-col gap-3 items-center justify-center p-8 rounded-lg w-full max-w-md md:max-w-xl lg:max-w-4xl">                    
                 <img src={logo} alt="Logo CT Junior" className=" sm:w-100 md:w-3/4 lg:w-1/2" />
                 <div className=" sm:w-full md:w-3/4 lg:w-3/4  flex flex-col gap-2">
-                    <InputField         
+                    <InputField /* Email */
                         icon={EnvelopeSimpleIcon}     
-                        iconWeight="duotone"
+                        iconWeight="regular"
                         type="email"
                         placeholder="Digite seu email"
                         label="Email"
@@ -22,13 +24,13 @@ export default function Login() {
                         onChange={() => {}}
                         name="email"
                         required={true}
-                        className="w-full "
+                        className="w-full"
                     />
                     <div className=" flex-colh-2">
-                        <InputField
+                        <InputField /* Password */
                         icon={KeyIcon}
-                        iconWeight="duotone"
-                        type="password"
+                        iconWeight="regular"
+                        type={showPassword ? 'text' : 'password'}
                         placeholder="Digite sua senha"
                         label="Senha"
                         value=""
@@ -37,7 +39,7 @@ export default function Login() {
                         required={true}                       
                         />
                         <span className="flex items-center gap-2 mt-1">
-                            <input type="checkbox" name="showPassword" className="text-white accent-[var(--color-orange)]"/>
+                            <input type="checkbox" name="showPassword" checked={showPassword} onChange={() => setShowPassword(!showPassword)} className="text-white accent-[var(--color-orange)]"/>
                             <p className="text-white">Mostrar senha</p>                            
                         </span>
                     </div>

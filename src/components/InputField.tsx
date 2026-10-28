@@ -12,6 +12,8 @@ interface InputFieldProps {
     required?: boolean;
     iconWeight?: IconWeight;
     className?: string;
+    error?: boolean;
+    errorMessage?: string;
 }
 
 export function InputField({icon: Icon, type, placeholder, label, value, onChange, name, required=true, iconWeight}: InputFieldProps) {
@@ -25,7 +27,7 @@ export function InputField({icon: Icon, type, placeholder, label, value, onChang
 
     return (        
         
-        <label className="flex h-8 w-full items-center gap-2 border-b border-gray-400 focus-within:border-b-2">
+        <label className="flex h-8 w-full items-center gap-2 border-b border-[var(--color-orange)] focus-within:border-b-2">
             {Icon && <Icon className="h-4 w-4" weight={iconWeight} color="white" />}
             <input
                 type={type}
@@ -34,7 +36,7 @@ export function InputField({icon: Icon, type, placeholder, label, value, onChang
                 onChange={handleChange}
                 name={name}
                 required={required}
-                className="h-full min-w-0 flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none border-b-amber-600 ${className}"                
+                className="h-full min-w-0 flex-1 bg-transparent  text-white placeholder-gray-400 focus:outline-none  ${className}"                
             />
         </label>
     );
