@@ -2,12 +2,14 @@ import "./style.css";
 import logo from "../../assets/ct-junior-black-orange.svg";
 import Card from "../card";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import {PaperPlaneTiltIcon, MailboxIcon, PlusIcon, UserIcon, SignOutIcon, ListIcon, XIcon } from "@phosphor-icons/react";
 
 
 interface SidebarProps {
     userInfo?: { name: string; email: string; avatar?: typeof Image };
     className?: string;
+
 }
 
 export function Sidebar({ userInfo, className }: SidebarProps) {
@@ -16,6 +18,7 @@ export function Sidebar({ userInfo, className }: SidebarProps) {
             window.location.href = path;
         }
         const [isOpen, setIsOpen] = useState(false);
+        const location = useLocation();
         return (
             <>               
                     <button
