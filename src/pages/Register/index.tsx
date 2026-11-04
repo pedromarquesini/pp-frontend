@@ -1,6 +1,7 @@
 import logo from "../../assets/ct-junior-all-white.svg";
 import { InputField } from "../../components/InputField";
 import { EnvelopeSimpleIcon, KeyIcon, SealCheckIcon, UserIcon} from "@phosphor-icons/react";
+import {Link, useNavigate} from "react-router-dom";
 
 import { useState } from "react";
 
@@ -14,7 +15,7 @@ export default function Register() {
         <main className="login-page flex flex-col items-center h-screen p-1">
             <section className="form-section flex flex-col gap-3 items-center justify-center p-8 rounded-lg w-full max-w-md md:max-w-xl lg:max-w-4xl">                    
                 <img src={logo} alt="Logo CT Junior" className="sm:w-100 md:w-3/4 lg:w-1/2" />
-                <form className=" sm:w-full md:w-3/4 lg:w-3/4  flex flex-col gap-2">
+                <form className=" sm:w-full md:w-3/4 lg:w-3/4  flex flex-col gap-4">
                         <InputField /*Name */
                             icon={UserIcon}     
                             iconWeight="regular"
@@ -79,5 +80,4 @@ export default function Register() {
             </section>
         </main>
     );
-
 };

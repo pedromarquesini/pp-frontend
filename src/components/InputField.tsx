@@ -16,7 +16,7 @@ interface InputFieldProps {
     errorMessage?: string;
 }
 
-export function InputField({icon: Icon, type, placeholder, label, value, onChange, name, required=true, iconWeight}: InputFieldProps) {
+export function InputField({icon: Icon, type, placeholder, value, onChange, name, required=true, iconWeight}: InputFieldProps) {
     
     const [valueInput, setValue] = useState(value);
 

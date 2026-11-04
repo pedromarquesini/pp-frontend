@@ -13,7 +13,7 @@ export default function Login() {
         <main className="login-page flex flex-col items-center h-screen p-1">
             <section className="form-section flex flex-col gap-3 items-center justify-center p-8 rounded-lg w-full max-w-md md:max-w-xl lg:max-w-4xl">                    
                 <img src={logo} alt="Logo CT Junior" className=" sm:w-100 md:w-3/4 lg:w-1/2" />
-                <div className=" sm:w-full md:w-3/4 lg:w-3/4  flex flex-col gap-2">
+                <form className=" sm:w-full md:w-3/4 lg:w-3/4  flex flex-col gap-2">
                     <InputField /* Email */
                         icon={EnvelopeSimpleIcon}     
                         iconWeight="regular"
@@ -43,11 +43,12 @@ export default function Login() {
                             <p className="text-white">Mostrar senha</p>                            
                         </span>
                     </div>
-                    
-                </div>
-                <button className="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600">
+
+                    <button type="submit" className="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600">
                     Entrar
-                </button>
+                    </button>
+                </form>
+                
                 <p className="text-white mt-4 ">
                     Não possui uma conta? <a href="/register" className="text-orange-500 hover:underline">Cadastre-se</a>
                 </p>
