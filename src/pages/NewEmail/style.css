@@ -1,0 +1,9 @@
+@reference "../../App.css";
+
+.input-style {
+    @apply border border-gray-300 
+    rounded-md py-2 px-3
+    focus:outline-none
+    focus:ring-2
+    focus:ring-orange-300;
+}
