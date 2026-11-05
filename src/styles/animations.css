@@ -1,0 +1,31 @@
+
+.bg-animated-orange-ct {
+  position: absolute;
+  inset: 0;
+
+  background-image: url("../assets/bg-orange-ct.png");
+  background-repeat: repeat-x;
+  background-size: auto;
+
+  animation: background-scroll 60s linear infinite;
+}
+.bg-animated-black-ct {
+  position: absolute;
+  inset: 0;
+
+  background-image: url("../assets/bg-black-ct.png");
+  background-repeat: repeat-x;
+  background-size: auto;
+
+  animation: background-scroll 60s linear infinite;
+}
+
+@keyframes background-scroll {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: -915px 0;
+  }
+}

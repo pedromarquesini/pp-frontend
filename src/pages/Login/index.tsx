@@ -1,7 +1,7 @@
 import logo from "../../assets/ct-junior-all-white.svg";
 import { InputField } from "../../components/InputField";
 import { EnvelopeSimpleIcon, KeyIcon} from "@phosphor-icons/react";
-
+import "../../styles/animations.css";
 
 import "./style.css";
 import { useState } from "react";
@@ -10,7 +10,7 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
 
     return (      
-        <main className="login-page flex flex-col items-center h-screen lg:justify-center">
+        <main className="p-2 flex flex-col items-center h-screen lg:justify-center bg-animated-orange-ct">
             <section className="form-section flex flex-col gap-3 items-center justify-center p-8 rounded-lg w-full max-w-md md:max-w-xl lg:max-w-4xl">                    
                 <img src={logo} alt="Logo CT Junior" className=" sm:w-100 md:w-3/4 lg:w-1/2" />
                 <form className=" sm:w-full md:w-3/4 lg:w-3/4  flex flex-col gap-2">
