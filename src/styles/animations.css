@@ -4,7 +4,8 @@
   inset: 0;
 
   background-image: url("../assets/bg-orange-ct.png");
-  background-repeat: repeat-x;
+  background-repeat: repeat;
+  
   background-size: auto;
 
   animation: background-scroll 60s linear infinite;
@@ -14,7 +15,7 @@
   inset: 0;
 
   background-image: url("../assets/bg-black-ct.png");
-  background-repeat: repeat-x;
+  background-repeat: repeat;
   background-size: auto;
 
   animation: background-scroll 60s linear infinite;

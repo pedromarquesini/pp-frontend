@@ -9,10 +9,12 @@ import {PaperPlaneTiltIcon, MailboxIcon, PlusIcon, UserIcon, SignOutIcon, ListIc
 interface SidebarProps {
     userInfo?: { name: string; email: string; avatar?: typeof Image };
     className?: string;
-
+    EntranceChecked?: boolean;
+    SentChecked?: boolean;
+    ProfileChecked?: boolean;
 }
 
-export function Sidebar({ userInfo, className }: SidebarProps) {
+export function Sidebar({ userInfo, className, EntranceChecked=false, SentChecked=false, ProfileChecked=false }: SidebarProps) {
 
         function navigator(path: string) {
             window.location.href = path;
@@ -41,6 +43,7 @@ export function Sidebar({ userInfo, className }: SidebarProps) {
                         transition-transform duration-300 ease-in-out
                         ${isOpen ? "translate-x-0" : "-translate-x-full"}
                         md:translate-x-0
+                        opacity-95
                         ${className}                        
                         `}>                
                         <div className="justify-center items-center flex mb-4 p-3">
@@ -49,9 +52,9 @@ export function Sidebar({ userInfo, className }: SidebarProps) {
 
                         <nav className="flex flex-col gap-2 p-2 lg:p-4" onClick={()=> setIsOpen(false)}>
                             <Card title="Novo Email" className="bg-amber-600 rounded-2xl p-2" icon={PlusIcon} />
-                            <Card title="Entrada" icon={MailboxIcon}  />
-                            <Card title="Enviados"  icon={PaperPlaneTiltIcon} />
-                            <Card title="Editar perfil"  icon={UserIcon} />
+                            <Card title="Entrada" icon={MailboxIcon} checked={EntranceChecked} />
+                            <Card title="Enviados"  icon={PaperPlaneTiltIcon} checked={SentChecked} />
+                            <Card title="Editar perfil"  icon={UserIcon} checked={ProfileChecked} />
                             <Card title="Sair" className="hover:bg-red-400" onClick={()=>{navigator("/login")}} icon={SignOutIcon} colorIcon="red" />
                         </nav>
 

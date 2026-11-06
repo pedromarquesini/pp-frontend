@@ -3,6 +3,8 @@ import { useState } from "react";
 
 interface InputFieldProps {
     icon?: Icon;
+    colorIcon?: string;
+    textColor?: string;
     type: React.HTMLInputTypeAttribute;
     placeholder: string;
     label: string;
@@ -16,7 +18,7 @@ interface InputFieldProps {
     errorMessage?: string;
 }
 
-export function InputField({icon: Icon, type, placeholder, value, onChange, name, required=true, iconWeight}: InputFieldProps) {
+export function InputField({icon: Icon, colorIcon, textColor, type, placeholder, value, onChange, name, required=true, iconWeight, className}: InputFieldProps) {
     
     const [valueInput, setValue] = useState(value);
 
@@ -28,7 +30,7 @@ export function InputField({icon: Icon, type, placeholder, value, onChange, name
     return (        
         
         <label className="flex h-8 w-full items-center gap-2 border-b border-[var(--color-orange)] focus-within:border-b-2">
-            {Icon && <Icon className="h-4 w-4" weight={iconWeight} color="white" />}
+            {Icon && <Icon className="h-4 w-4" weight={iconWeight} color={colorIcon || "white"} />}
             <input
                 type={type}
                 placeholder={placeholder}
@@ -36,7 +38,10 @@ export function InputField({icon: Icon, type, placeholder, value, onChange, name
                 onChange={handleChange}
                 name={name}
                 required={required}
-                className="h-full min-w-0 flex-1 bg-transparent  text-white placeholder-gray-400 focus:outline-none  ${className}"                
+                className={`
+                    h-full min-w-0 flex-1 bg-transparent
+                    ${textColor || "text-white"} placeholder-gray-400
+                    focus:outline-none +  ${className}`}
             />
         </label>
     );

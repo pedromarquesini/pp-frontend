@@ -1,11 +1,12 @@
 import EntranceMail from "../../components/EntranceMail";
 import {Sidebar} from "../../components/Sidebar/Sidebar";
+import "../../styles/animations.css";
 
 export default function MainPage() {
     return (
-        <div className="flex min-h-screen min-w-0 p-3 bg-gray-300">
-            <Sidebar />
-            <main className="flex-1 p-4 w-full max-w-full min-h-screen overflow-x-hidden md:ml-64 bg-white rounded-2xl shadow-md ">
+        <div className="flex  min-w-0 p-3 bg-animated-black-ct ">
+            <Sidebar EntranceChecked={true} />
+            <main className="flex-1 p-4 w-full max-w-full overflow-x-hidden md:ml-64 bg-white rounded-2xl shadow-md ">
                 <span className="flex justify-center items-center w-full mb-2">
                     <h1 className="text-2xl font-bold text-gray-800">Entrada</h1>
                 </span>
