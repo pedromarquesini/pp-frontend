@@ -21,6 +21,7 @@ export function Sidebar({ userInfo, className, EntranceChecked=false, SentChecke
         }
         const [isOpen, setIsOpen] = useState(false);
         const location = useLocation();
+
         return (
             <>               
                     <button
@@ -58,13 +59,11 @@ export function Sidebar({ userInfo, className, EntranceChecked=false, SentChecke
                             <Card title="Sair" className="hover:bg-red-400" onClick={()=>{navigator("/login")}} icon={SignOutIcon} colorIcon="red" />
                         </nav>
 
-                        <div className="flex flex-row gap-2 items-center mt-auto">
+                        <div className="flex flex-row p-2 gap-2 items-center mt-auto">
                             <img src={userInfo?.avatar || "https://via.placeholder.com/40"} alt="Avatar" className="rounded-full w-10 h-10" />                     
                             <p className="text-lg font-medium truncate">{userInfo?.name || "Usuário"}</p>       
                         </div>
-                    </aside>
-                    
+                    </aside>                    
             </>
-    );
-    
+    );    
 }
