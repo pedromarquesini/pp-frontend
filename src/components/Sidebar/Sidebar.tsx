@@ -2,27 +2,31 @@ import "./style.css";
 import logo from "../../assets/ct-junior-black-orange.svg";
 import Card from "../card";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
 import {PaperPlaneTiltIcon, MailboxIcon, PlusIcon, UserIcon, SignOutIcon, ListIcon, XIcon } from "@phosphor-icons/react";
+import { api, handleLogout } from "../../services/api";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 
 interface SidebarProps {
-    userInfo?: { name: string; email: string; avatar?: typeof Image };
+    userInfo?: { name: string; email: string; avatar?: string };
     className?: string;
     EntranceChecked?: boolean;
     SentChecked?: boolean;
     ProfileChecked?: boolean;
 }
 
-export function Sidebar({ userInfo, className, EntranceChecked=false, SentChecked=false, ProfileChecked=false }: SidebarProps) {
+export function Sidebar({ userInfo , className, EntranceChecked=false, SentChecked=false, ProfileChecked=false }: SidebarProps) {
 
-        function navigator(path: string) {
-            window.location.href = path;
-        }
+        const navigate = useNavigate();
         const [isOpen, setIsOpen] = useState(false);
-        const location = useLocation();
+        
+        const context = useAuth();
+        const userName = context?.session?.user.nome;
+        const userEmail = context?.session?.user.email;
+        const userAvatar = context?.session?.user.avatar;
 
-        return (
+        return (            
             <>               
                     <button
                         onClick={()=> setIsOpen(!isOpen)}
@@ -56,12 +60,12 @@ export function Sidebar({ userInfo, className, EntranceChecked=false, SentChecke
                             <Card title="Entrada" icon={MailboxIcon} checked={EntranceChecked} />
                             <Card title="Enviados"  icon={PaperPlaneTiltIcon} checked={SentChecked} />
                             <Card title="Editar perfil"  icon={UserIcon} checked={ProfileChecked} />
-                            <Card title="Sair" className="hover:bg-red-400" onClick={()=>{navigator("/login")}} icon={SignOutIcon} colorIcon="red" />
+                            <Card title="Sair" className="hover:bg-red-400" onClick={handleLogout} icon={SignOutIcon} colorIcon="red" />
                         </nav>
 
                         <div className="flex flex-row p-2 gap-2 items-center mt-auto">
-                            <img src={userInfo?.avatar || "https://via.placeholder.com/40"} alt="Avatar" className="rounded-full w-10 h-10" />                     
-                            <p className="text-lg font-medium truncate">{userInfo?.name || "Usuário"}</p>       
+                            <img src={userAvatar || "https://via.placeholder.com/40"} alt="Avatar" className="rounded-full w-10 h-10" />                     
+                            <p className="text-lg font-medium truncate">{userName || "Usuário"}</p>       
                         </div>
                     </aside>                    
             </>

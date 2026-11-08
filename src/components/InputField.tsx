@@ -9,7 +9,7 @@ interface InputFieldProps {
     placeholder: string;
     label: string;
     value: string;
-    onChange: (value: string) => void;
+    onChange?: (value: string) => void;
     name?: string;
     required?: boolean;
     iconWeight?: IconWeight;
@@ -18,7 +18,7 @@ interface InputFieldProps {
     errorMessage?: string;
 }
 
-export function InputField({icon: Icon, colorIcon, textColor, type, placeholder, value, onChange, name, required=true, iconWeight, className}: InputFieldProps) {
+export function InputField({icon: Icon, colorIcon, textColor, type, placeholder, value, onChange = () => {}, name, required=true, iconWeight, className}: InputFieldProps) {
     
     const [valueInput, setValue] = useState(value);
 
