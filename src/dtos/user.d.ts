@@ -8,5 +8,5 @@ type UserAPIResponse = {
         email: string;
         avatar: string | null;   
     }
-     
+    role: UserAPIRole;     
 }
