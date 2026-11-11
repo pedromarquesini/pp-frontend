@@ -56,10 +56,10 @@ export function Sidebar({ userInfo , className, EntranceChecked=false, SentCheck
                         </div>          
 
                         <nav className="flex flex-col gap-2 p-2 lg:p-4" onClick={()=> setIsOpen(false)}>
-                            <Card title="Novo Email" className="bg-amber-600 rounded-2xl p-2" icon={PlusIcon} />
-                            <Card title="Entrada" icon={MailboxIcon} checked={EntranceChecked} />
-                            <Card title="Enviados"  icon={PaperPlaneTiltIcon} checked={SentChecked} />
-                            <Card title="Editar perfil"  icon={UserIcon} checked={ProfileChecked} />
+                            <Card title="Novo Email" className="bg-amber-600 rounded-2xl p-2" icon={PlusIcon} onClick={()=>{navigate("/new-email");}} />
+                            <Card title="Entrada" icon={MailboxIcon} checked={EntranceChecked} onClick={()=>{navigate("/main");}} />
+                            <Card title="Enviados"  icon={PaperPlaneTiltIcon} checked={SentChecked} onClick={()=>{navigate("/sent");}} />
+                            <Card title="Editar perfil"  icon={UserIcon} checked={ProfileChecked} onClick={()=>{navigate("/profile");}} />
                             <Card title="Sair" className="hover:bg-red-400" onClick={handleLogout} icon={SignOutIcon} colorIcon="red" />
                         </nav>
 

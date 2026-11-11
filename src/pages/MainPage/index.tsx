@@ -1,8 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import EntranceMail from "../../components/EntranceMail";
 import {Sidebar} from "../../components/Sidebar/Sidebar";
 import "../../styles/animations.css";
+import { useEffect } from "react";
 
 export default function MainPage() {
+
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/login");
+        }
+    }, []);
+
     return (
         <div className="flex  min-w-0 p-3 bg-animated-black-ct ">
             <Sidebar EntranceChecked={true} />

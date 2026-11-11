@@ -1,6 +1,20 @@
+import { useEffect } from "react";
 import {Sidebar} from "../../components/Sidebar/Sidebar";
 import "../../styles/animations.css";
+import { useNavigate } from "react-router-dom";
+
+
 export default function ViewEmail() {
+    
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/login");
+        }
+    }, []);
+
     return (
         <div className="flex min-h-screen min-w-0 p-3 bg-animated-black-ct">
             <Sidebar />

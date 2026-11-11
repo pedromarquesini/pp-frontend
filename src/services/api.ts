@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { type AxiosRequestConfig } from 'axios';
 
 export const api = axios.create({
   baseURL: '/api',
@@ -20,3 +21,6 @@ export function handleLogout() {
   window.location.href = '/login';
 }
 
+export const fetcher = async (url: string, options: AxiosRequestConfig = {}) => {
+  api.get(url, options).then((response) => response.data);   
+}

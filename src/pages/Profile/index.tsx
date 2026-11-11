@@ -3,9 +3,68 @@ import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { PencilIcon, UserIcon } from "@phosphor-icons/react";
 
 import "../../styles/animations.css";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { api } from "../../services/api";
 
 
 export default function Profile() {
+
+    const navigate = useNavigate();
+
+    const [linkPhoto, setLinkPhoto] = useState("");
+    const [editName, setEditName] = useState("");
+
+    const context = useAuth();
+    
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/login");
+        }
+    }, []);
+
+    async function onActionPhoto(linkPhoto: string) {
+        
+
+        try{
+            const data = {
+                linkPhoto: linkPhoto,
+            }
+
+            await api.patch("/my-image", data).then((response) => {
+                alert("Foto alterada com sucesso!");
+                navigate("/profile");
+            }).catch((error) => {
+                console.error(error);
+                alert("Ocorreu um erro ao alterar a foto do perfil. Por favor, tente novamente.");
+            });
+        } catch (error) {
+            console.error(error);
+            alert("Ocorreu um erro ao alterar a foto do perfil. Por favor, tente novamente.");
+        }
+    }
+
+    async function onActionName(editName: string) {
+        
+        try{
+            const data = {
+                nome: editName,
+            }
+            await api.patch("/my-name", data).then((response) => {
+                alert("Nome alterado com sucesso!");
+                navigate("/profile");
+            }).catch((error) => {
+                console.error(error);
+                alert(Response.error || "Ocorreu um erro ao alterar o nome do perfil. Por favor, tente novamente.");
+            });
+        } catch (error) {
+            console.error(error);
+            alert(Response.error || "Ocorreu um erro ao alterar o nome do perfil. Por favor, tente novamente.");
+        }
+    }
+
     return (
             <div className="flex min-w-0 p-3 bg-animated-black-ct">
                 <Sidebar ProfileChecked={true} />
@@ -29,13 +88,13 @@ export default function Profile() {
                                 type="text"
                                 placeholder="Link foto do perfil"
                                 label="LinkPhoto"
-                                value=""
-                                onChange={() => {}}
+                                value={linkPhoto}
+                                onChange={(value) => setLinkPhoto(value)}
                                 name="LinkPhoto"  
                                 textColor="text-black"
                                 className="w-full"                          
                             />
-                            <button type="submit" className="rounded-md min-w-1/4 p-2 bg-orange-500 hover:bg-orange-600 " >Alterar Foto</button>
+                            <button type="submit" onClick={() => onActionPhoto(linkPhoto)} className="rounded-md min-w-1/4 p-2 bg-orange-500 hover:bg-orange-600 " >Alterar Foto</button>
                         </div>
 
                         {/*Alterar o nome do perfil */}
@@ -46,13 +105,13 @@ export default function Profile() {
                                 type="text"
                                 placeholder="Editar nome"
                                 label="EditName"
-                                value=""
-                                onChange={() => {}}
+                                value={editName}
+                                onChange={(value) => setEditName(value)}
                                 name="EditName"
                                 textColor="text-black"
                                 className="w-full"
                             />
-                            <button type="submit" className="rounded-md min-w-1/4 p-2 bg-orange-500 hover:bg-orange-600 " >Alterar Nome</button>
+                            <button type="submit" onClick={() => onActionName(editName)} className="rounded-md min-w-1/4 p-2 bg-orange-500 hover:bg-orange-600 " >Alterar Nome</button>
                         </div> 
                     </div>                   
                 </main>

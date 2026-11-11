@@ -12,7 +12,7 @@ interface CardProps extends React.HTMLAttributes<HTMLInputElement> {
 export default function Card({title, icon: Icon, className, colorIcon, checked=false, onClick}: CardProps) {
     return (
         <>
-            <div className={`flex items-center mb-2 p-2 gap-2 rounded-2xl hover:bg-amber-500 hover:opacity-90 hover:cursor-pointer ${className} `} onClick={onClick}>
+            <div className={`flex items-center mb-2 p-2 gap-2 rounded-2xl hover:bg-amber-500 hover:opacity-90 hover:cursor-pointer card ${className} `} onClick={onClick}>
                {Icon && <Icon className="h-4 w-4 {}" weight="bold" color={checked ? "orange" : colorIcon || "black"} />}
                 <button><p className={`text-lg font-medium ${checked ? 'text-orange-400' : ''}`}>{title}</p></button>
             </div>
