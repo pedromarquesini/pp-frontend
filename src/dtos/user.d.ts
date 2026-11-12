@@ -1,12 +1,10 @@
-type UserAPIRole = "user";
-
-type UserAPIResponse = {
+type LoginResponse = {
     token: string;
-    user: {
-        id: string;
-        nome: string;
-        email: string;
-        avatar: string | null;   
-    }
-    role: UserAPIRole;     
+}
+
+type User = {
+    id: string;
+    nome: string;
+    email: string;
+    fotoDePerfil: string | null;
 }

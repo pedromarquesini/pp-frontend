@@ -1,19 +1,18 @@
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import EntranceMail from "../../components/EntranceMail";
 import {Sidebar} from "../../components/Sidebar/Sidebar";
 import "../../styles/animations.css";
-import { useEffect } from "react";
+import { getMyEmails } from "../../services/emails";
 
 export default function MainPage() {
 
     const navigate = useNavigate();
-    
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            navigate("/login");
-        }
-    }, []);
+
+    const {data: emails = [], isPending, isError, refetch} = useQuery({
+        queryKey: ["emails"],
+        queryFn: getMyEmails,
+    });
 
     return (
         <div className="flex  min-w-0 p-3 bg-animated-black-ct ">
@@ -22,21 +21,31 @@ export default function MainPage() {
                 <span className="flex justify-center items-center w-full mb-2">
                     <h1 className="text-2xl font-bold text-gray-800">Entrada</h1>
                 </span>
-                <EntranceMail
-                    sendBy="João da Silva"
-                    emailSentBy="joaodasilva@gmail.com"
-                    title="Lorem ipsum dolor sit amet, 
-                    consectetur adipiscing elit. 
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                    viewed={false}                
-                />
-                <EntranceMail
-                    sendBy="Fulano de Tal"
-                    emailSentBy="fulanodetals@gmail.com"
-                    title="Email de teste"
-                    viewed={true}                
-                />
+                
+                {isPending && <p>Carregando...</p>}
+
+                {isError && (
+                    <div className="flex flex-col items-center gap-2">
+                        <p className="text-red-500">Não foi possível carregar seus emails.</p>
+                        <button onClick={() => refetch()} className="text-orange-500 hover:underline">
+                            Tentar novamente
+                        </button>
+                    </div>
+                )}
+
+                {!isPending && !isError && emails.length === 0 && (
+                    <p className="text-gray-500">Nenhum email na caixa de entrada.</p>
+                )}
+
+                {emails.map((email) => (
+                    <EntranceMail
+                        key={email.email_id}                        
+                        emailSentBy={email.enviado_por}
+                        title={email.titulo}
+                        viewed={email.jaVisto}
+                        onClick={() => navigate(`/email/${email.email_id}`)}
+                    />
+                ))}                  
             </main>
         </div>
     );

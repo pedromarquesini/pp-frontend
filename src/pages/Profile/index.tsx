@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../services/api";
-
+import  AlertMessage  from "../../components/alert";
 
 export default function Profile() {
 
@@ -17,32 +17,46 @@ export default function Profile() {
     const [editName, setEditName] = useState("");
 
     const context = useAuth();
+
+    const userName = context.user?.nome;
+    const userAvatar = context.user?.fotoDePerfil;
+
+    const [alertPhoto, setAlertPhoto] = useState<{ 
+        message: string; 
+        type: "success" | "error" | "info";
+    } | null>(null);
+
+    const [alertName, setAlertName] = useState<{ 
+        message: string; 
+        type: "success" | "error" | "info";
+    } | null>(null);
     
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            navigate("/login");
-        }
-    }, []);
 
-    async function onActionPhoto(linkPhoto: string) {
-        
-
+    async function onActionPhoto(linkPhoto: string) {        
         try{
             const data = {
                 linkPhoto: linkPhoto,
             }
 
             await api.patch("/my-image", data).then((response) => {
-                alert("Foto alterada com sucesso!");
+                setAlertPhoto({
+                    message: "Foto alterada com sucesso!",
+                    type: "success"
+                });            
                 navigate("/profile");
             }).catch((error) => {
                 console.error(error);
-                alert("Ocorreu um erro ao alterar a foto do perfil. Por favor, tente novamente.");
+                setAlertPhoto({
+                    message: "Ocorreu um erro ao alterar a foto do perfil. Por favor, tente novamente.",
+                    type: "error"
+                });
             });
         } catch (error) {
             console.error(error);
-            alert("Ocorreu um erro ao alterar a foto do perfil. Por favor, tente novamente.");
+            setAlertPhoto({
+                message: "Ocorreu um erro ao alterar a foto do perfil. Por favor, tente novamente.",
+                type: "error"
+            });
         }
     }
 
@@ -53,15 +67,20 @@ export default function Profile() {
                 nome: editName,
             }
             await api.patch("/my-name", data).then((response) => {
-                alert("Nome alterado com sucesso!");
+                setAlertName({
+                    message: "Nome alterado com sucesso!",
+                    type: "success"
+                });
                 navigate("/profile");
             }).catch((error) => {
-                console.error(error);
-                alert(Response.error || "Ocorreu um erro ao alterar o nome do perfil. Por favor, tente novamente.");
+                console.error(error);                
+                setAlertName({
+                    message: "Ocorreu um erro ao alterar o nome do perfil. Por favor, tente novamente.",
+                    type: "error"
+                });
             });
         } catch (error) {
-            console.error(error);
-            alert(Response.error || "Ocorreu um erro ao alterar o nome do perfil. Por favor, tente novamente.");
+            console.error(error);            
         }
     }
 
@@ -74,14 +93,20 @@ export default function Profile() {
                     </div>
 
                     <div className="flex flex-col items-center justify-center mt-4 mb-4">
-                        <img src="https://via.placeholder.com/300" alt="Profile" className="rounded-full w-32 h-32 mx-auto mt-4" />
-                        <h2>John Doe</h2>
+                        <img src={userAvatar || "https://via.placeholder.com/300"} alt="Profile" className="rounded-full w-32 h-32 mx-auto mt-4" />
+                        <h2>{userName || "Usuário"}</h2>
                     </div>
 
                     {/*Edição do perfil*/}
                     <div className="flex flex-col items-center justify-center gap-3 w-full overflow-x-hidden">
                         {/*Alterar a foto do perfil */}
                         <div className="flex flex-col items-center justify-center mt-4 mb-4 gap-2 p-4 w-full max-w-md">            
+                            
+                            {alertPhoto && (
+                                <div className="w-full sm:w-full md:w-3/4 lg:w-3/4">
+                                    <AlertMessage message={alertPhoto.message} type={alertPhoto.type} />
+                                </div>
+                            )}
                             <InputField
                                 icon = {UserIcon}
                                 colorIcon = "var(--color-orange)"
@@ -99,6 +124,11 @@ export default function Profile() {
 
                         {/*Alterar o nome do perfil */}
                         <div className="flex flex-col items-center justify-center mt-4 mb-4 gap-2 p-4 w-full max-w-md">
+                            {alertName && (
+                                <div className="w-full sm:w-full md:w-3/4 lg:w-3/4">
+                                    <AlertMessage message={alertName.message} type={alertName.type} />
+                                </div>
+                            )}
                             <InputField
                                 icon = {PencilIcon}
                                 colorIcon = "var(--color-orange)"

@@ -1,19 +1,16 @@
 import { BrowserRouter } from "react-router-dom";
 import { AuthRoutes } from "./auth-routes";
+import { useAuth } from "../hooks/useAuth";
 import { UserRoutes } from "./user-routes";
 
-import {useAuth} from "../hooks/useAuth";
 
 export function Routes() {
-    const session = useAuth();
-
-    function Route(){
-        switch (session?.session?.role) {
-            case "user":
-                return <UserRoutes />;
-            default:
-                return <AuthRoutes />;
+    const { user, loading } = useAuth();
+    function Route(){        
+        if(loading){
+            return <div>Carregando...</div>
         }
+        return user ? <UserRoutes /> : <AuthRoutes />;
     }
 
     return (        

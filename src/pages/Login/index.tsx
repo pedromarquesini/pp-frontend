@@ -5,10 +5,12 @@ import { api } from "../../services/api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z,ZodError } from "zod";
+import  AlertMessage  from "../../components/alert";
 
 import "../../styles/animations.css";
 import "./style.css";
 import { AxiosError } from "axios";
+import { useAuth } from "../../hooks/useAuth";
 
 
 
@@ -18,7 +20,14 @@ const signInSchema = {
 };
 
 export default function Login() {      
+    
+    const context = useAuth();
     const [showPassword, setShowPassword] = useState(false);
+
+    const [alert, setAlert] = useState<{ 
+        message: string; 
+        type: "success" | "error" | "info";
+    } | null>(null);
 
     const navigate = useNavigate();
 
@@ -32,33 +41,46 @@ export default function Login() {
                 senha: signInSchema.senha.parse(senha),
             }
 
-            await api.post("/login", data).then((response) => {
-                const { token } = response.data;
-                localStorage.setItem("token", token);
-                navigate("/main");
-                }).catch((error) => {
-                    console.error(error);
-                    alert("Ocorreu um erro ao fazer login. Por favor, tente novamente.");
-                    });
+            const response = await api.post("/login", data);
+            //console.log("Resposta da API:", response.data);
 
-        } catch ( error) {
+
+            const { token } = response.data;
+            await context.signIn(token);
+            navigate("/main");        
+
+        } catch (error) {
             console.error(error);
             if(error instanceof ZodError) {
-                alert(error.issues[0].message);
+                console.error(error.issues[0].message);
                 return;
             }
             if(error instanceof AxiosError) {
-                alert(error.response?.data.message || "Ocorreu um erro ao fazer login. Por favor, tente novamente.");
+                if (error.response?.status === 400) {
+                    console.error("Email ou senha incorretos. Por favor, tente novamente.");
+                    setAlert({
+                        message: "Email ou senha incorretos. Por favor, tente novamente.",
+                        type: "error"
+                    })
+                }
                 return;
-            }
-            alert("Dados inválidos. Por favor, verifique as informações fornecidas.");            
+            }           
+            return;
         }            
     }
 
-    return (      
-        <main className="p-2 flex flex-col items-center h-screen lg:justify-center bg-animated-orange-ct">
+    return (    
+        
+        <main className="p-2 flex flex-col items-center h-screen lg:justify-center bg-animated-orange-ct">           
             <section className="form-section flex flex-col gap-3 items-center justify-center p-8 rounded-3xl w-full max-w-md md:max-w-xl lg:max-w-4xl">                    
                 <img src={logo} alt="Logo CT Junior" className=" sm:w-100 md:w-3/4 lg:w-1/2" />
+
+                {alert && (
+                    <div className="w-full sm:w-full md:w-3/4 lg:w-3/4">
+                        <AlertMessage message={alert.message} type={alert.type} />
+                    </div>
+                )}
+
                 <form className=" sm:w-full md:w-3/4 lg:w-3/4  flex flex-col gap-2" action={onAction}>
                     <InputField /* Email */
                         icon={EnvelopeSimpleIcon}     

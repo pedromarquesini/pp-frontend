@@ -16,11 +16,3 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export function handleLogout() {
-  localStorage.removeItem('token');
-  window.location.href = '/login';
-}
-
-export const fetcher = async (url: string, options: AxiosRequestConfig = {}) => {
-  api.get(url, options).then((response) => response.data);   
-}

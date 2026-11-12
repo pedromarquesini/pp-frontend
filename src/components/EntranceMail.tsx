@@ -2,7 +2,7 @@ import { ChecksIcon,MinusIcon } from "@phosphor-icons/react";
 
 interface EntranceMailProps {
     className?: string;
-    sendBy: string;
+    sendBy?: string;
     emailSentBy: string;
     title: string;
     viewed: boolean;   

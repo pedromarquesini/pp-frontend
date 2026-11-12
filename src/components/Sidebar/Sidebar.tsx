@@ -1,9 +1,8 @@
 import "./style.css";
 import logo from "../../assets/ct-junior-black-orange.svg";
 import Card from "../card";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {PaperPlaneTiltIcon, MailboxIcon, PlusIcon, UserIcon, SignOutIcon, ListIcon, XIcon } from "@phosphor-icons/react";
-import { api, handleLogout } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -18,48 +17,14 @@ interface SidebarProps {
 
 export function Sidebar({ userInfo , className, EntranceChecked=false, SentChecked=false, ProfileChecked=false }: SidebarProps) {
 
+        const context = useAuth();        
+
         const navigate = useNavigate();
         const [isOpen, setIsOpen] = useState(false);
         
-        // const context = useAuth();
-        // console.log("Contexto de autenticação:", context);
-        // const userName = context?.session?.user.nome;
-        // const userEmail = context?.session?.user.email;
-        // const userAvatar = context?.session?.user.avatar;
-        // const userId = context?.session?.user.id;
-
-        // const userName = context?.session?.user.nome;
-        // const userEmail = context?.session?.user.email;
-        // const userAvatar = context?.session?.user.avatar;
-
-        const [userName, setUserName] = useState<string | null>(null);
-        const [userEmail, setUserEmail] = useState<string | null>(null);
-        const [userAvatar, setUserAvatar] = useState<string | null>(null);
-        const [userId, setUserId] = useState<string | null>(null);
-
-
-        async function getUserInfo() {
-            try {
-                const response = await api.get("/me");
-                const { id, nome, email, fotoDePerfil } = response.data;
-                console.log("Informações do usuário:", { id, nome, email, fotoDePerfil });
-                setUserId(id);
-                setUserName(nome);
-                setUserEmail(email);
-                setUserAvatar(fotoDePerfil);
-            }
-            catch (error) {
-                console.error("Erro ao obter informações do usuário:", error);
-                alert("Ocorreu um erro ao buscar informações do usuário. Por favor, tente novamente.");
-            }
-        }
-
-
-        useEffect(() => {
-            getUserInfo();
-        },[]);
-
-
+        const userName = context.user?.nome;
+        const userAvatar = context.user?.fotoDePerfil;
+        
 
         return (            
             <>               
@@ -95,7 +60,7 @@ export function Sidebar({ userInfo , className, EntranceChecked=false, SentCheck
                             <Card title="Entrada" icon={MailboxIcon} checked={EntranceChecked} onClick={()=>{navigate("/main");}} />
                             <Card title="Enviados"  icon={PaperPlaneTiltIcon} checked={SentChecked} onClick={()=>{navigate("/sent");}} />
                             <Card title="Editar perfil"  icon={UserIcon} checked={ProfileChecked} onClick={()=>{navigate("/profile");}} />
-                            <Card title="Sair" className="hover:bg-red-400" onClick={handleLogout} icon={SignOutIcon} colorIcon="red" />
+                            <Card title="Sair" className="hover:bg-red-400" onClick={()=>{context.signOut(); navigate("/login");}} icon={SignOutIcon} colorIcon="red" />
                         </nav>
 
                         <div className="flex flex-row p-2 gap-2 items-center mt-auto">

@@ -1,39 +1,69 @@
 import { useEffect } from "react";
 import {Sidebar} from "../../components/Sidebar/Sidebar";
 import "../../styles/animations.css";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getEmail } from "../../services/emails";
+import { ArrowLeftIcon } from "@phosphor-icons/react";
 
 export default function ViewEmail() {
     
     const navigate = useNavigate();
+    const {emailId} = useParams();
+    const queryClient = useQueryClient();
+
+    const { data: email, isPending, isError, isSuccess, refetch } = useQuery({
+        queryKey: ["email", emailId],
+        queryFn: () => getEmail(emailId!),
+        enabled: !!emailId,
+    });
     
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            navigate("/login");
+        if (isSuccess) {
+            queryClient.invalidateQueries({ queryKey: ["my-emails"] });
         }
-    }, []);
+    }, [isSuccess, queryClient]);
+
 
     return (
         <div className="flex min-h-screen min-w-0 p-3 bg-animated-black-ct">
             <Sidebar />
             <main className="flex-1 p-4 w-full max-w-full overflow-x-hidden md:ml-64 bg-white rounded-2xl shadow-md">
-                <span className="flex justify-center items-center w-full mb-2">
-                    <h1 className="text-2xl font-bold text-gray-800">Lorem Ipsum dolor sit amet concesesu</h1>
-                </span>
-                <span>
-                    <span className="flex flex-row gap-2">
-                        <p className="">Enviado por:</p>
-                        <p className="text-orange-500">fulanodetals@gmail.com</p>                     
-                    </span>
-                    <p className="mt-2 flex text-justify">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a lacus aliquet ante sodales venenatis. Morbi consequat, dui sit amet aliquam ultricies, arcu dolor sagittis massa, a pellentesque massa sapien quis leo. Nam eu ligula ac eros dictum cursus eget non lectus. Curabitur nec ante a nulla tincidunt iaculis at id augue. Phasellus in justo feugiat, congue velit sit amet, efficitur neque. Sed ac tincidunt massa. Integer vestibulum arcu eu nisi laoreet porttitor sit amet vulputate metus. Maecenas neque tellus, ultrices id arcu eu, vehicula pellentesque magna. Curabitur facilisis, urna in vehicula dapibus, justo arcu feugiat velit, id accumsan velit velit eu sem. Nam vitae dui sit amet orci varius elementum. Nullam leo nunc, malesuada at convallis nec, convallis quis purus.
 
-                        Sed ac tellus non dolor semper finibus. Nunc ac iaculis est. Vestibulum placerat scelerisque elementum. Suspendisse id blandit augue. In efficitur feugiat varius. Quisque finibus nulla nec ex accumsan, ut pharetra neque sagittis. Aliquam molestie arcu non erat pretium, eget lobortis lacus finibus. Sed consequat pharetra turpis ut pulvinar. In condimentum consectetur lectus at aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer fringilla dolor id turpis lacinia vestibulum. Nullam sed sapien eu ipsum tristique euismod eu sit amet magna. Proin in diam rhoncus dolor pellentesque tristique. Fusce nec leo porta, finibus massa finibus, lobortis eros. Vivamus non euismod risus. Mauris vel elit tincidunt, pellentesque sem a, molestie ligula.
-                    </p>
-                </span>
-                
+                <button
+                    onClick={() => navigate(-1)}
+                    className="flex items-center gap-1 text-gray-600 hover:text-orange-500 mb-2"
+                >
+                    <ArrowLeftIcon /> Voltar
+                </button>
+
+                {isPending && <p>Carregando...</p>}
+
+                {isError && (
+                    <div className="flex flex-col items-center gap-2">
+                        <p className="text-red-500">Não foi possível carregar este email.</p>
+                        <button onClick={() => refetch()} className="text-orange-500 hover:underline">
+                            Tentar novamente
+                        </button>
+                    </div>
+                )}
+
+                {email && (
+                    <>
+                        <span className="flex justify-center items-center w-full mb-2">
+                            <h1 className="text-2xl font-bold text-gray-800">{email.titulo}</h1>
+                        </span>
+                        <span>
+                            <span className="flex flex-row gap-2">
+                                <p className="">Enviado por:</p>
+                                <p className="text-orange-500">{email.enviado_por}</p>                     
+                            </span>
+                            <p className="mt-2 flex text-justify">
+                                {email.content}
+                            </p>
+                        </span>
+                    </>
+                )}
             </main>
         </div>
     );

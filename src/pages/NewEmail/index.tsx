@@ -1,10 +1,11 @@
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import "./style.css"
 import "../../styles/animations.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { api } from "../../services/api";
+import AlertMessage from "../../components/alert";
 
 const newEmailSchema = {
     to: z.string().email({ message: "Email inválido" }),
@@ -15,6 +16,11 @@ const newEmailSchema = {
 export default function NewEmail() {
     const navigate = useNavigate();
     
+    const [alert, setAlert] = useState<{ 
+        message: string; 
+        type: "success" | "error" | "info";
+    } | null>(null);
+
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (!token) {
@@ -33,20 +39,33 @@ export default function NewEmail() {
                 content: newEmailSchema.bodyEmail.parse(bodyEmail),
             }   
             await api.post("/email", data).then((response) => {
-                alert("Email enviado com sucesso!");
+                setAlert({
+                    message: "Email enviado com sucesso!",
+                    type: "success"
+                });
                 navigate("/main");
             }).catch((error) => {
                 console.error(error);
-                alert("Ocorreu um erro ao enviar o email. Por favor, tente novamente.");
+                setAlert({
+                    message: "Ocorreu um erro ao enviar o email. Por favor, tente novamente.",
+                    type: "error"
+                });
             });
 
         }catch (error) {
             console.error(error);
             if (error instanceof z.ZodError) {
-                alert(error.issues[0].message);
+                console.error(error.issues[0].message);
+                setAlert({
+                    message: error.issues[0].message,
+                    type: "error"
+                });
                 return;
             }
-            alert("Dados inválidos. Por favor, verifique as informações fornecidas.");
+            setAlert({
+                message: "Dados inválidos. Por favor, verifique as informações fornecidas.",
+                type: "error"
+            });
         }
     }
 
@@ -58,6 +77,11 @@ export default function NewEmail() {
                 <div className="flex items-center min-w-full justify-center">
                     <h1 className="text-2xl font-bold">Novo email</h1>
                 </div>
+                {alert && (
+                    <div className="w-full sm:w-full md:w-3/4 lg:w-3/4">
+                        <AlertMessage message={alert.message} type={alert.type} />
+                    </div>
+                )}
                 <form className="flex flex-1 flex-col gap-1 mt-4 min-h-0" action={onAction}>     
                     <label htmlFor="to" className="mt-2">Para</label>
                     <input type="email" id="to" name="to" placeholder="Digite o email do destinatário" className="input-style" />
