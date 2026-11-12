@@ -38,7 +38,7 @@ export default function NewEmail() {
                 title: newEmailSchema.subject.parse(subject),
                 content: newEmailSchema.bodyEmail.parse(bodyEmail),
             }   
-            await api.post("/email", data).then((response) => {
+            await api.post("/email", data).then(() => {
                 setAlert({
                     message: "Email enviado com sucesso!",
                     type: "success"

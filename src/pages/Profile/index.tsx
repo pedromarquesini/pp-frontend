@@ -3,7 +3,7 @@ import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { PencilIcon, UserIcon } from "@phosphor-icons/react";
 
 import "../../styles/animations.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../services/api";
@@ -38,7 +38,7 @@ export default function Profile() {
                 linkPhoto: linkPhoto,
             }
 
-            await api.patch("/my-image", data).then((response) => {
+            await api.patch("/my-image", data).then(() => {
                 setAlertPhoto({
                     message: "Foto alterada com sucesso!",
                     type: "success"
@@ -66,7 +66,7 @@ export default function Profile() {
             const data = {
                 nome: editName,
             }
-            await api.patch("/my-name", data).then((response) => {
+            await api.patch("/my-name", data).then(() => {
                 setAlertName({
                     message: "Nome alterado com sucesso!",
                     type: "success"

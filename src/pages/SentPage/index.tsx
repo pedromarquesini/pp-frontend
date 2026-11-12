@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SentMail from "../../components/SentMail";
 import {Sidebar} from "../../components/Sidebar/Sidebar";
 import "../../styles/animations.css";

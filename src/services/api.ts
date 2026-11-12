@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { type AxiosRequestConfig } from 'axios';
 
 export const api = axios.create({
   baseURL: '/api',

@@ -15,7 +15,7 @@ interface SidebarProps {
     ProfileChecked?: boolean;
 }
 
-export function Sidebar({ userInfo , className, EntranceChecked=false, SentChecked=false, ProfileChecked=false }: SidebarProps) {
+export function Sidebar({ className, EntranceChecked=false, SentChecked=false, ProfileChecked=false }: SidebarProps) {
 
         const context = useAuth();        
 
