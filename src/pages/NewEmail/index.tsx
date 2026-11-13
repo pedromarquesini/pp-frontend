@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { api } from "../../services/api";
 import AlertMessage from "../../components/alert";
+import { AxiosError } from "axios";
 
 const newEmailSchema = {
     to: z.string().email({ message: "Email inválido" }),
@@ -50,6 +51,22 @@ export default function NewEmail() {
                     message: "Ocorreu um erro ao enviar o email. Por favor, tente novamente.",
                     type: "error"
                 });
+                if(error instanceof AxiosError) {
+                    if(error.response?.status === 404) {
+                        console.error("Email não encontrado.");
+                        setAlert({
+                            message: "Email de destinatário não encontrado.",
+                            type: "error"
+                        });                        
+                    }else if(error.response?.status === 401) {
+                        // console.error("Usuário não autorizado. Por favor, faça login novamente.");
+                        setAlert({
+                            message: "Usuário não autorizado. Por favor, faça login novamente.",
+                            type: "error"
+                        });
+                    }
+                }
+
             });
 
         }catch (error) {
