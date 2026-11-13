@@ -7,6 +7,7 @@ import { z } from "zod";
 import { api } from "../../services/api";
 import AlertMessage from "../../components/alert";
 import { AxiosError } from "axios";
+import SubmitButton from "../../components/SubmitButton";
 
 const newEmailSchema = {
     to: z.string().email({ message: "Email inválido" }),
@@ -110,7 +111,7 @@ export default function NewEmail() {
                     <textarea id="bodyEmail" name="bodyEmail" placeholder="Insira o conteúdo do email" className="input-style flex-1 min-h-64 resize-none"/>
 
                     <span className="flex items-center justify-center">
-                        <button type="submit" className="rounded-md min-w-1/4 p-2 bg-orange-500 hover:bg-orange-600 " >Enviar</button>
+                        <SubmitButton label="Enviar" labelLoading="Enviando..." />
                     </span>
 
                 </form>

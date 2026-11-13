@@ -6,11 +6,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z,ZodError } from "zod";
 import  AlertMessage  from "../../components/alert";
-
 import "../../styles/animations.css";
 import "./style.css";
 import { AxiosError } from "axios";
 import { useAuth } from "../../hooks/useAuth";
+import SubmitButton from "../../components/SubmitButton";
+
 
 
 
@@ -110,9 +111,7 @@ export default function Login() {
                         </span>
                     </div>
 
-                    <button type="submit" className="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600">
-                    Entrar
-                    </button>
+                    <SubmitButton label="Entrar" labelLoading="Entrando..." />
                 </form>
                 
                 <p className="text-white mt-4 ">
